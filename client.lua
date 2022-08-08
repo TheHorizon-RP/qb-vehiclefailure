@@ -9,26 +9,24 @@ local fEngineDamageMult = 0.0
 local fBrakeForce = 1.0
 local isBrakingForward = false
 local isBrakingReverse = false
-local healthEngineLast = 1000.0
-local healthEngineCurrent = 1000.0
-local healthEngineNew = 1000.0
+local healthEngineLast = 2000.0
+local healthEngineCurrent = 2000.0
+local healthEngineNew = 2000.0
 local healthEngineDelta = 0.0
 local healthEngineDeltaScaled = 0.0
-local healthBodyLast = 1000.0
-local healthBodyCurrent = 1000.0
-local healthBodyNew = 1000.0
+local healthBodyLast = 2000.0
+local healthBodyCurrent = 2000.0
+local healthBodyNew = 2000.0
 local healthBodyDelta = 0.0
 local healthBodyDeltaScaled = 0.0
-local healthPetrolTankLast = 1000.0
-local healthPetrolTankCurrent = 1000.0
-local healthPetrolTankNew = 1000.0
+local healthPetrolTankLast = 2000.0
+local healthPetrolTankCurrent = 2000.0
+local healthPetrolTankNew = 2000.0
 local healthPetrolTankDelta = 0.0
 local healthPetrolTankDeltaScaled = 0.0
 local tireBurstLuckyNumber
 local fixMessagePos = math.random(repairCfg.fixMessageCount)
 local noFixMessagePos = math.random(repairCfg.noFixMessageCount)
-local tireBurstMaxNumber = cfg.randomTireBurstInterval * 1200;
-if cfg.randomTireBurstInterval ~= 0 then tireBurstLuckyNumber = math.random(tireBurstMaxNumber) end
 
 local DamageComponents = {
     "radiator",
@@ -231,28 +229,6 @@ local function fscale(inputValue, originalMin, originalMax, newBegin, newEnd, cu
 	end
 
 	return rangedValue
-end
-
-local function tireBurstLottery()
-	local tireBurstNumber = math.random(tireBurstMaxNumber)
-	if tireBurstNumber == tireBurstLuckyNumber then
-		-- We won the lottery, lets burst a tire.
-		if GetVehicleTyresCanBurst(vehicle) == false then return end
-		local numWheels = GetVehicleNumberOfWheels(vehicle)
-		local affectedTire
-		if numWheels == 2 then
-			affectedTire = (math.random(2)-1)*4		-- wheel 0 or 4
-		elseif numWheels == 4 then
-			affectedTire = (math.random(4)-1)
-			if affectedTire > 1 then affectedTire = affectedTire + 2 end	-- 0, 1, 4, 5
-		elseif numWheels == 6 then
-			affectedTire = (math.random(6)-1)
-		else
-			affectedTire = 0
-		end
-		SetVehicleTyreBurst(vehicle, affectedTire, false, 1000.0)
-		tireBurstLuckyNumber = math.random(tireBurstMaxNumber)			-- Select a new number to hit, just in case some numbers occur more often than others
-	end
 end
 
 -- Events
